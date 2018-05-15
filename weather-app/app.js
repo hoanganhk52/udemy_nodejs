@@ -20,17 +20,13 @@ geocode.geocodeAddress(argv.address, (errMessage, result) => {
     if (errMessage) {
         console.log(errMessage);
     } else {
-        console.log(JSON.stringify(result, undefined, 2));
-    }
-});
-
-//4d13c4321ce9af51d458644f88211301
-//https://api.darksky.net/forecast/[key]/[latitude],[longitude]
-
-weather.getWeather(latitude, longitude, (err, results) => {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log(JSON.stringify(results, undefined, 2));
+        console.log(result);
+        weather.getWeather(result.latitude, result.longtitude, (err, results) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(JSON.stringify(results, undefined, 2));
+            }
+        });
     }
 });
