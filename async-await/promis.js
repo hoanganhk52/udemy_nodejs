@@ -44,15 +44,42 @@ const getGrades = (schoolID) => {
 	});
 };
 
-const getStatus = (userID) => {
-	return getUser(userID).then((user) => {
+const getStatus = userID => {
+	let user;
+	return getUser(userID).then(user1 => {
+		user = user1;
+		return getGrades(user.schoolID);
+	}).then(grades => {
+		let average = 0;
 
+		if (grades.length > 0) {
+			average = grades.map(grade => grade.grade).reduce((total, sum) => total + sum) / grades.length;
+		}
+
+		return `${user.name} has a ${average} in the class`;
 	});
 };
 
-getGrades(999).then((user) => {
-	console.log(user);
+const getStatusAlt = async (userID) => {
+	const user = await getUser(userID);
+	const grades = await getGrades(user.schoolID);
+	let average = 0;
+
+	if (grades.length > 0) {
+		average = grades.map(grade => grade.grade).reduce((total, sum) => total + sum) / grades.length;
+	}
+
+	return `${user.name} has a ${average} in the class`;
+};
+
+getStatusAlt(3).then((name) => {
+	console.log(name);
 }).catch((e) => {
 	console.log(e);
 });
 
+// getStatus(2).then((status) => {
+// 	console.log(status);
+// }).catch((e) => {
+// 	console.log(e);
+// });
